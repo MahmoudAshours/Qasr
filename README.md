@@ -49,8 +49,8 @@ API: RESTful endpoints.
 ## To use
 
 ```bash
-git clone https://github.com/yourname/modernurl.git
-cd modernurl
+git clone https://github.com/MahmoudAshours/Qasr.git
+cd Qasr
 
 go run cmd/seeder/main.go
 
