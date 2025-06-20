@@ -11,6 +11,7 @@ import (
 	"qasr/internal/app/shortener"
 	handler "qasr/internal/handler/http"
 	"qasr/internal/repo/mongodb"
+	redisCache "qasr/internal/repo/redis"
 )
 
 func main() {
@@ -19,8 +20,9 @@ func main() {
 		log.Fatal(err)
 	}
 	db := client.Database("qasr")
+	redisCache := redisCache.NewRedisCache("localhost:6379")
 	repo := mongodb.NewLinkRepository(db)
-	service := shortener.NewShortenerService(repo)
+	service := shortener.NewShortenerService(repo, redisCache)
 	h := handler.NewHandler(service)
 
 	r := gin.Default()
