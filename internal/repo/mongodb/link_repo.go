@@ -42,8 +42,3 @@ func (r *LinkRepository) FindBySlug(slug string) (string, error) {
 	}
 	return link.OriginalURL, nil
 }
-
-func (r *LinkRepository) SlugExists(slug string) bool {
-	count, _ := r.Collection.CountDocuments(context.TODO(), bson.M{"slug": slug})
-	return count > 0
-}
