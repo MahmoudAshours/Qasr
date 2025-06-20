@@ -1,20 +1,30 @@
 package main
 
 import (
-	handler "qasr/internal/handler/http"
+	"context"
+	"log"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"qasr/internal/app/shortener"
+	handler "qasr/internal/handler/http"
+	"qasr/internal/repo/mongodb"
 )
 
 func main() {
-	r := gin.Default()
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	db := client.Database("qasr")
+	repo := mongodb.NewLinkRepository(db)
+	service := shortener.NewShortenerService(repo)
+	h := handler.NewHandler(service)
 
-	// Define root route
-	r.GET("/", func(c *gin.Context) {
-		c.String(200, "Qasr is live 👑")
-	})
-	r.POST("/shorten", handler.Shorten)
-	r.GET("/r/:slug", handler.Redirect)
-	// Start server
-	r.Run(":8080") // Default is localhost:8080
+	r := gin.Default()
+	r.POST("/shorten", h.Shorten)
+	r.GET("/r/:slug", h.Redirect)
+	r.Run(":8080")
 }
