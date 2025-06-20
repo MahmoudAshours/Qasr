@@ -1,33 +1,28 @@
 package shortener
 
 import (
-	"errors"
+	"qasr/internal/repo/mongodb"
 	"qasr/internal/utils"
-	"sync"
 )
 
-var (
-	urlStore = make(map[string]string)
-	mu       sync.RWMutex
-)
-
-func CreateShortLink(originalURL string) string {
-	slug, _ := utils.GenerateSecureSlug(6)
-
-	mu.Lock()
-	defer mu.Unlock()
-	urlStore[slug] = originalURL
-
-	return slug
+type ShortenerService struct {
+	Repo *mongodb.LinkRepository
 }
 
-func GetOriginalURL(slug string) (string, error) {
-	mu.RLock()
-	defer mu.RUnlock()
+func NewShortenerService(repo *mongodb.LinkRepository) *ShortenerService {
+	return &ShortenerService{Repo: repo}
+}
 
-	url, exists := urlStore[slug]
-	if !exists {
-		return "", errors.New("not found")
+func (s *ShortenerService) CreateShortLink(url string) string {
+	for {
+		slug, _ := utils.GenerateSecureSlug(6)
+		if !s.Repo.SlugExists(slug) {
+			s.Repo.Create(slug, url)
+			return slug
+		}
 	}
-	return url, nil
+}
+
+func (s *ShortenerService) GetOriginalURL(slug string) (string, error) {
+	return s.Repo.FindBySlug(slug)
 }
