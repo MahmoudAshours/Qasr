@@ -50,3 +50,15 @@ func (s *ShortenerService) SlugExists(slug string) bool {
 	}
 	return false
 }
+
+func (s *ShortenerService) GetBySlug(slug string) (string, error) {
+	url, err := s.Cache.Get(slug)
+	if err == nil && url != "" {
+		return url, nil
+	}
+	url, err = s.Repo.FindBySlug(slug)
+	if err == nil {
+		_ = s.Cache.Set(slug, url, 30*time.Minute)
+	}
+	return url, err
+}
