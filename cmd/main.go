@@ -34,6 +34,8 @@ func main() {
 	r.POST("/shorten", h.Shorten)
 	r.GET("/r/:slug", h.Redirect)
 	r.GET("/dashboard/:slug", h.Dashboard)
+	r.POST("/ai/slug", h.SuggestSlug)
+	r.GET("/ai/describe/:slug", h.DescribeSlug)
 
 	r.Run(":8080")
 }
