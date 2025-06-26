@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/rand"
 	"math/big"
+	"strings"
 )
 
 const slugCharset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -17,4 +18,13 @@ func GenerateSecureSlug(n int) (string, error) {
 		b[i] = slugCharset[num.Int64()]
 	}
 	return string(b), nil
+}
+
+func CleanSlug(raw string) string {
+	slug := strings.ToLower(raw)
+	slug = strings.TrimSpace(slug)
+	slug = strings.ReplaceAll(slug, " ", "-")
+	slug = strings.ReplaceAll(slug, ".", "")
+	slug = strings.ReplaceAll(slug, "/", "")
+	return slug
 }
