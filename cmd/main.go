@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	"qasr/internal/app/analytics"
 	"qasr/internal/app/shortener"
 	handler "qasr/internal/handler/http"
 	"qasr/internal/repo/mongodb"
@@ -21,12 +22,18 @@ func main() {
 	}
 	db := client.Database("qasr")
 	redisCache := redisCache.NewRedisCache("localhost:6379")
-	repo := mongodb.NewLinkRepository(db)
-	service := shortener.NewShortenerService(repo, redisCache)
-	h := handler.NewHandler(service)
+	linkRepo := mongodb.NewLinkRepository(db)
+	clickRepo := mongodb.NewClickRepo(db)
+
+	shortenerService := shortener.NewShortenerService(linkRepo, redisCache)
+	analyticsService := analytics.NewAnalyticsService(clickRepo)
+
+	h := handler.NewHandler(shortenerService, analyticsService)
 
 	r := gin.Default()
 	r.POST("/shorten", h.Shorten)
 	r.GET("/r/:slug", h.Redirect)
+	r.GET("/dashboard/:slug", h.Dashboard)
+
 	r.Run(":8080")
 }
