@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"qasr/internal/app/analytics"
-	"qasr/internal/app/shortener"
-	model "qasr/internal/domain"
-	"qasr/internal/utils"
+	"qasr/backend/internal/app/analytics"
+	"qasr/backend/internal/app/shortener"
+	model "qasr/backend/internal/domain"
+	"qasr/backend/internal/utils"
 	"time"
 
 	"github.com/gin-gonic/gin"

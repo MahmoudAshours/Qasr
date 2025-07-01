@@ -8,11 +8,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"qasr/internal/app/analytics"
-	"qasr/internal/app/shortener"
-	handler "qasr/internal/handler/http"
-	"qasr/internal/repo/mongodb"
-	redisCache "qasr/internal/repo/redis"
+	"qasr/backend/internal/app/analytics"
+	"qasr/backend/internal/app/shortener"
+	handler "qasr/backend/internal/handler/http"
+	"qasr/backend/internal/repo/mongodb"
+	redisCache "qasr/backend/internal/repo/redis"
 )
 
 func main() {

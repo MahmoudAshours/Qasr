@@ -1,7 +1,7 @@
 package analytics
 
 import (
-	"qasr/internal/repo/mongodb"
+	"qasr/backend/internal/repo/mongodb"
 	"time"
 )
 

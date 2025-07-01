@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"qasr/internal/utils"
+	"qasr/backend/internal/utils"
 )
 
 type SlugSuggestRequest struct {

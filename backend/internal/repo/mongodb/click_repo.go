@@ -2,7 +2,7 @@ package mongodb
 
 import (
 	"context"
-	model "qasr/internal/domain"
+	model "qasr/backend/internal/domain"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,7 +12,6 @@ type ClickRepo struct {
 	Collection *mongo.Collection
 }
 
-// 🔧 Constructor
 func NewClickRepo(db *mongo.Database) *ClickRepo {
 	return &ClickRepo{
 		Collection: db.Collection("clicks"),

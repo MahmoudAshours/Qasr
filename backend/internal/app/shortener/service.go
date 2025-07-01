@@ -1,9 +1,9 @@
 package shortener
 
 import (
-	"qasr/internal/repo/mongodb"
-	redisCache "qasr/internal/repo/redis"
-	"qasr/internal/utils"
+	"qasr/backend/internal/repo/mongodb"
+	redisCache "qasr/backend/internal/repo/redis"
+	"qasr/backend/internal/utils"
 	"time"
 )
 
